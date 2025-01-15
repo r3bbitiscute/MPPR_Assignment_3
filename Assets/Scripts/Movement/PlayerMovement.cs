@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // Apply jump force
     }
 
-    private void ResetJump()
+    public void ResetJump()
     {
         readyToJump = true; // Reset jump
     }
