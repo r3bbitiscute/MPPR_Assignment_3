@@ -15,7 +15,7 @@ public class SwingingDone : MonoBehaviour
     private Vector3 swingPoint;
     private SpringJoint joint;
 
-    [Header("OdmGear")]
+    [Header("SwingingBoostMovement")]
     public Transform orientation;
     public Rigidbody rb;
     public float horizontalThrustForce;
@@ -29,6 +29,10 @@ public class SwingingDone : MonoBehaviour
 
     [Header("Input")]
     public KeyCode swingKey;
+
+    [Header("Speed")]
+    private bool inSpeedBlockSlow = false;
+    public float slowSpeedMultipliyer = 0.5f;
 
     /// <summary>
     /// Gets the player movement
@@ -44,7 +48,7 @@ public class SwingingDone : MonoBehaviour
 
         CheckForSwingPoints();
 
-        if (joint != null) OdmGearMovement();
+        if (joint != null) SwingingBoostMovement();
     }
 
     private void LateUpdate()
@@ -135,21 +139,22 @@ public class SwingingDone : MonoBehaviour
         Destroy(joint);
     }
 
-    private void OdmGearMovement()
+    private void SwingingBoostMovement()
     {
+        float speedMultiplier = inSpeedBlockSlow ? slowSpeedMultipliyer : 1f;
         // right
-        if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime);
+        if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime *speedMultiplier);
         // left
-        if (Input.GetKey(KeyCode.A)) rb.AddForce(-orientation.right * horizontalThrustForce * Time.deltaTime);
+        if (Input.GetKey(KeyCode.A)) rb.AddForce(-orientation.right * horizontalThrustForce * Time.deltaTime * speedMultiplier);
 
         // forward
-        if (Input.GetKey(KeyCode.W)) rb.AddForce(orientation.forward * horizontalThrustForce * Time.deltaTime);
+        if (Input.GetKey(KeyCode.W)) rb.AddForce(orientation.forward * horizontalThrustForce * Time.deltaTime * speedMultiplier);
 
         // shorten cable
         if (Input.GetKey(KeyCode.Space))
         {
             Vector3 directionToPoint = swingPoint - transform.position;
-            rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime);
+            rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime * speedMultiplier);
 
             float distanceFromPoint = Vector3.Distance(transform.position, swingPoint);
 
@@ -178,5 +183,20 @@ public class SwingingDone : MonoBehaviour
 
         lr.SetPosition(0, gunTip.position);
         lr.SetPosition(1, currentGrapplePosition);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SlowBlock"))
+        {
+            inSpeedBlockSlow = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("SlowBlock"))
+        {
+            inSpeedBlockSlow = false;
+        }
     }
 }
