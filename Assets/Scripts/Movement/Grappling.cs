@@ -11,14 +11,13 @@ public class Grappling : MonoBehaviour
     public Transform gunTip; // Empty game object for the start of the line renderer
     public LayerMask wall;
     public LineRenderer lineRenderer;
-    public GrapplingRope grapplingRope;
 
     [Header("Grappling")]
     public float maxDistance;
     public float grappleDelayTime;
-    [SerializeField] public Vector3 grapplePoint;
+    private Vector3 grapplePoint;
     public float overshootYAxis;
-    [SerializeField] public bool grappling;
+    private bool grappling;
 
     [Header("CoolDown")]
     public float grapplingCD;
@@ -26,6 +25,7 @@ public class Grappling : MonoBehaviour
 
     [Header("Input")]
     private KeyCode grappleKey = KeyCode.E;
+
 
     /// <summary>
     /// Gets the player movement
@@ -51,10 +51,7 @@ public class Grappling : MonoBehaviour
     private void LateUpdate()
     {
         // Set line renderer start position
-        if (grappling)
-        {
-            //lineRenderer.SetPosition(0, gunTip.position);
-        }
+        if (grappling) lineRenderer.SetPosition(0, gunTip.position);
     }
 
     /// <summary>
@@ -87,7 +84,7 @@ public class Grappling : MonoBehaviour
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
 
-        //lineRenderer.SetPosition(1, grapplePoint); // Set line render end position
+        lineRenderer.SetPosition(1, grapplePoint); // Set line render end position
     }
 
     private void ExecuteGrapple()
@@ -120,5 +117,4 @@ public class Grappling : MonoBehaviour
         grappling = false;
         lineRenderer.enabled = false;
     }
-
 }
