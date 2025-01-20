@@ -25,7 +25,7 @@ public class Grappling : MonoBehaviour
     private float grapplingCDTimer;
 
     [Header("Input")]
-    public KeyCode grappleKey;
+    private KeyCode grappleKey = KeyCode.E;
 
     /// <summary>
     /// Gets the player movement
