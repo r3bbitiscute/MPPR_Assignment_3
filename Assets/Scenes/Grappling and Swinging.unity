@@ -8767,12 +8767,14 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1741656184}
-  - component: {fileID: 1741656187}
-  - component: {fileID: 1741656186}
-  - component: {fileID: 1741656185}
-  m_Layer: 6
-  m_Name: Wall (9)
+  - component: {fileID: 1036548974}
+  - component: {fileID: 1036548979}
+  - component: {fileID: 1036548980}
+  - component: {fileID: 1036548981}
+  - component: {fileID: 1036548982}
+  - component: {fileID: 1036548983}
+  m_Layer: 0
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8822,6 +8824,26 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741656183}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf66b6f5025ad5c498401c8337bf0396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 963194228}
+  gunTip: {fileID: 2074708874}
+  wall:
+    serializedVersion: 2
+    m_Bits: 64
+  lineRenderer: {fileID: 1452274952}
+  grapplingRope: {fileID: 1036548983}
+  maxDistance: 25
+  grappleDelayTime: 0.1
+  grapplePoint: {x: 0, y: 0, z: 0}
+  overshootYAxis: 2
+  grappling: 0
+  grapplingCD: 1
+  grappleKey: 323
+--- !u!114 &1036548982
+MonoBehaviour:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -8858,13 +8880,75 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1741656187
 MeshFilter:
+  m_GameObject: {fileID: 1036548970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e42e63673498e4ca448c66d027a337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunTip: {fileID: 1662032605}
+  cam: {fileID: 963194228}
+  player: {fileID: 1036548974}
+  whatIsGrappleable:
+    serializedVersion: 2
+    m_Bits: 64
+  lr: {fileID: 73991056}
+  maxSwingDistance: 25
+  swingKey: 324
+--- !u!114 &1036548983
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741656183}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1773293230
+  m_GameObject: {fileID: 1036548970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df32220c66476d4a862aa90d8a96f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 1452274952}
+  grapplingScript: {fileID: 1036548981}
+  ropeSegments: 100
+  damper: 14
+  strength: 800
+  velocity: 15
+  waveCount: 4
+  waveHeight: 10
+  waveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.89729697
+      outSlope: 0.89729697
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.0045330673
+      value: 0.0040675076
+      inSlope: 0.44660547
+      outSlope: 0.44660547
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.0040860297
+      outSlope: -0.0040860297
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &1092989125
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
