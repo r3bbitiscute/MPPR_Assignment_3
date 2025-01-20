@@ -5646,6 +5646,7 @@ GameObject:
   - component: {fileID: 1036548981}
   - component: {fileID: 1036548983}
   - component: {fileID: 1036548984}
+  - component: {fileID: 1036548985}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5744,7 +5745,9 @@ MonoBehaviour:
   lineRenderer: {fileID: 1452274952}
   maxDistance: 25
   grappleDelayTime: 0.1
+  grapplePoint: {x: 0, y: 0, z: 0}
   overshootYAxis: 2
+  grappling: 0
   grapplingCD: 1
 --- !u!114 &1036548983
 MonoBehaviour:
@@ -5802,6 +5805,59 @@ MonoBehaviour:
   predictionPoint: {fileID: 1028753354}
   swingKey: 323
   slowSpeedMultipliyer: 0.5
+--- !u!114 &1036548985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036548970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df32220c66476d4a862aa90d8a96f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 1452274952}
+  grapplingScript: {fileID: 1036548981}
+  ropeSegments: 100
+  damper: 14
+  strength: 800
+  velocity: 15
+  waveCount: 4
+  waveHeight: 10
+  waveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 9.6479225
+      outSlope: 9.6479225
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.013737845
+      value: 0.13254167
+      inSlope: 4.7567673
+      outSlope: 4.7567673
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.13438787
+      outSlope: -0.13438787
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1050284097
 GameObject:
   m_ObjectHideFlags: 0

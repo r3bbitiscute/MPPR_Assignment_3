@@ -15,9 +15,9 @@ public class Grappling : MonoBehaviour
     [Header("Grappling")]
     public float maxDistance;
     public float grappleDelayTime;
-    private Vector3 grapplePoint;
+    public Vector3 grapplePoint;
     public float overshootYAxis;
-    private bool grappling;
+    public bool grappling;
 
     [Header("CoolDown")]
     public float grapplingCD;
@@ -51,14 +51,18 @@ public class Grappling : MonoBehaviour
     private void LateUpdate()
     {
         // Set line renderer start position
-        if (grappling) lineRenderer.SetPosition(0, gunTip.position);
+        if (grappling)
+        {
+            //lineRenderer.SetPosition(0, gunTip.position);
+
+        }
     }
 
-    /// <summary>
-    /// Starts the grapple, setting the grapple point to the point in front of the camera,
-    /// or the max distance if there is no hit.
-    /// </summary>
-    private void StartGrapple()
+        /// <summary>
+        /// Starts the grapple, setting the grapple point to the point in front of the camera,
+        /// or the max distance if there is no hit.
+        /// </summary>
+        private void StartGrapple()
     {
         if (grapplingCDTimer > 0) return; // Return if cooldown is not ready
 
