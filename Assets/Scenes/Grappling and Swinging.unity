@@ -5824,7 +5824,7 @@ MonoBehaviour:
   strength: 800
   velocity: 15
   waveCount: 4
-  waveHeight: 10
+  waveHeight: 8
   waveCurve:
     serializedVersion: 2
     m_Curve:
