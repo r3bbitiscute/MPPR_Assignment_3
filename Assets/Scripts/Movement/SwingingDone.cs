@@ -32,7 +32,9 @@ public class SwingingDone : MonoBehaviour
 
     [Header("Speed")]
     private bool inSpeedBlockSlow = false;
+    private bool inSpeedBlockFast = false;
     public float slowSpeedMultipliyer = 0.5f;
+    public float fastSpeedMultipliyer = 2.0f;
 
     /// <summary>
     /// Gets the player movement
@@ -141,7 +143,19 @@ public class SwingingDone : MonoBehaviour
 
     private void SwingingBoostMovement()
     {
-        float speedMultiplier = inSpeedBlockSlow ? slowSpeedMultipliyer : 1f;
+        float speedMultiplier = 1f;
+        if (inSpeedBlockFast)
+        {
+            speedMultiplier = fastSpeedMultipliyer;
+        }
+        else if (inSpeedBlockSlow)
+        {
+            speedMultiplier = slowSpeedMultipliyer;
+        }
+        else
+        {
+            speedMultiplier = 1f;
+        }
         // right
         if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime *speedMultiplier);
         // left
@@ -191,12 +205,20 @@ public class SwingingDone : MonoBehaviour
         {
             inSpeedBlockSlow = true;
         }
+        if (other.CompareTag("FastBlock"))
+        {
+            inSpeedBlockFast = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("SlowBlock"))
         {
             inSpeedBlockSlow = false;
+        }
+        if (other.CompareTag("FastBlock"))
+        {
+            inSpeedBlockFast = false;
         }
     }
 }

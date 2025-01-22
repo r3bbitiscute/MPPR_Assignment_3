@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SlowBlock
   - HighGravityBlock
+  - FastBlock
   layers:
   - Default
   - TransparentFX

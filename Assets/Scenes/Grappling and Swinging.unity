@@ -4013,12 +4013,12 @@ GameObject:
   - component: {fileID: 756896133}
   - component: {fileID: 756896132}
   m_Layer: 7
-  m_Name: Gravity Environment
-  m_TagString: HighGravityBlock
+  m_Name: SlowSpeed Environment
+  m_TagString: SlowBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &756896132
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9569,8 +9569,8 @@ GameObject:
   - component: {fileID: 2130478393}
   - component: {fileID: 2130478392}
   m_Layer: 8
-  m_Name: Speed Environment
-  m_TagString: SlowBlock
+  m_Name: FastSpeed Environment
+  m_TagString: FastBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
