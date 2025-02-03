@@ -17,7 +17,7 @@ public class GrapplingRope : MonoBehaviour
     public float waveHeight;
     public AnimationCurve waveCurve;
 
-
+    
     private void Awake()
     {
         lineRenderer.GetComponent<LineRenderer>();
