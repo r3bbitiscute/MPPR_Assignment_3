@@ -24,7 +24,7 @@ public class Grappling : MonoBehaviour
     private float grapplingCDTimer;
 
     [Header("Input")]
-    private KeyCode grappleKey = KeyCode.E;
+    public KeyCode grappleKey;
 
 
     /// <summary>
