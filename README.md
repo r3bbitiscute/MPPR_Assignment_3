@@ -3,8 +3,7 @@
 
 ### Akmal
 - Attack of Titan-style swinging
-- Level Design
-- Area Gravity
+- Area Speed Boost
 - Self Made RigidBody
 
 ### Khai Xuen
