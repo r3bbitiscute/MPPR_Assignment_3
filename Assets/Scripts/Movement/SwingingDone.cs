@@ -31,8 +31,8 @@ public class SwingingDone : MonoBehaviour
     public KeyCode swingKey;
 
     [Header("Speed")]
-    private bool inSpeedBlockSlow = false;
-    public float slowSpeedMultipliyer = 0.5f;
+    private bool inSpeedBlockFast = false;
+    public float fastSpeedMultipliyer = 3f;
 
     /// <summary>
     /// Gets the player movement
@@ -61,11 +61,11 @@ public class SwingingDone : MonoBehaviour
         if (joint != null) return;
 
         RaycastHit sphereCastHit;
-        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, 
+        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward,
                             out sphereCastHit, maxSwingDistance, whatIsGrappleable);
 
         RaycastHit raycastHit;
-        Physics.Raycast(cam.position, cam.forward, 
+        Physics.Raycast(cam.position, cam.forward,
                             out raycastHit, maxSwingDistance, whatIsGrappleable);
 
         Vector3 realHitPoint;
@@ -104,7 +104,7 @@ public class SwingingDone : MonoBehaviour
         if (predictionHit.point == Vector3.zero) return;
 
         // deactivate active grapple
-        if(GetComponent<Grappling>() != null)
+        if (GetComponent<Grappling>() != null)
             GetComponent<Grappling>().StopGrapple();
         //pm.ResetJump();
 
@@ -141,9 +141,9 @@ public class SwingingDone : MonoBehaviour
 
     private void SwingingBoostMovement()
     {
-        float speedMultiplier = inSpeedBlockSlow ? slowSpeedMultipliyer : 1f;
+        float speedMultiplier = inSpeedBlockFast ? fastSpeedMultipliyer : 1f;
         // right
-        if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime *speedMultiplier);
+        if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime * speedMultiplier);
         // left
         if (Input.GetKey(KeyCode.A)) rb.AddForce(-orientation.right * horizontalThrustForce * Time.deltaTime * speedMultiplier);
 
@@ -178,7 +178,7 @@ public class SwingingDone : MonoBehaviour
         // if not grappling, don't draw rope
         if (!joint) return;
 
-        currentGrapplePosition = 
+        currentGrapplePosition =
             Vector3.Lerp(currentGrapplePosition, swingPoint, Time.deltaTime * 8f);
 
         lr.SetPosition(0, gunTip.position);
@@ -189,14 +189,14 @@ public class SwingingDone : MonoBehaviour
     {
         if (other.CompareTag("SlowBlock"))
         {
-            inSpeedBlockSlow = true;
+            inSpeedBlockFast = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("SlowBlock"))
         {
-            inSpeedBlockSlow = false;
+            inSpeedBlockFast = false;
         }
     }
 }
