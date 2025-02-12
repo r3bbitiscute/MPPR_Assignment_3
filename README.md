@@ -13,4 +13,5 @@
 ### Kai Xiang
 - Rope Animation Using Physics
 - Assist Khai Xuen and Akmal on Self Made 3D Collider/Rigidbody
+- UI Design and Animations
 
