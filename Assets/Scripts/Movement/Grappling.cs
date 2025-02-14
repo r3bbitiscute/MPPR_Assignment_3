@@ -25,7 +25,8 @@ public class Grappling : MonoBehaviour
     private float grapplingCDTimer;
 
     [Header("Input")]
-    public KeyCode grappleKey;
+    public KeyCode grappleKey = KeyCode.E;
+
 
     /// <summary>
     /// Gets the player movement
@@ -69,9 +70,6 @@ public class Grappling : MonoBehaviour
         grappling = true;
         lineRenderer.enabled = true;
 
-        // Freeze player movement
-        playerMovement.freeze = true;
-
         // Perform raycast check to see if there is a wall at the front of the camera
         RaycastHit hit;
         if (Physics.Raycast(cam.position, cam.forward, out hit, maxDistance, wall))
@@ -92,8 +90,6 @@ public class Grappling : MonoBehaviour
 
     private void ExecuteGrapple()
     {
-        playerMovement.freeze = false; // Unfreeze player movement
-
         // Calculate a point lower then the actual grapple point to perform a smoother jump (helps to avoid a straight movement)
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
         float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
@@ -112,8 +108,6 @@ public class Grappling : MonoBehaviour
     /// </summary>
     public void StopGrapple()
     {
-        playerMovement.freeze = false; // Unfreeze player movement
-
         grapplingCDTimer = grapplingCD; // Set cooldown timer
 
         // Disable line renderer
