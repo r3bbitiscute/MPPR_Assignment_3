@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SphereCollider : MonoBehaviour
 {
-    private float height;
     private float radius;
-
     private MeshRenderer meshRenderer;
 
     void Start()
@@ -15,29 +11,50 @@ public class SphereCollider : MonoBehaviour
         CalculatingRadiusAndHeight();
     }
 
-    void Update()
+    private void Update()
     {
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, radius))
-        {
-            float heightOffset = height / 2f; // Half the height of the capsule
-            Vector3 newPosition = hit.point + Vector3.up * heightOffset;
-
-            // Update the position of the capsule to stand on top
-            transform.position = newPosition;
-        }
+        Collision();
     }
 
+    /// <summary>
+    /// Calculating the radius of the player using the mesh renderer
+    /// </summary>
     private void CalculatingRadiusAndHeight()
     {
-        // Get the bounds of the capsule mesh
+        // Get the bounds of the mesh
         Bounds bounds = meshRenderer.bounds;
 
-        // Height is the full height (y-axis dimension) of the mesh bounds
-        height = bounds.size.y;
-
-        // Radius is roughly half of the width of the mesh bounds
+        // Radius is of a circle is half the width of the mesh bounds
         radius = bounds.size.x / 2f;
+    }
+
+    /// <summary>
+    /// Use a sphere cast to check in every direction to see if there is a collision
+    /// </summary>
+    private void Collision()
+    {
+        Vector3[] directions = new Vector3[]
+        {
+            Vector3.right, Vector3.left, Vector3.forward, Vector3.back, Vector3.down, Vector3.up
+        };
+
+        // Perform a SphereCast check in each direction in the directions array
+        foreach (var direction in directions)
+        {
+            RaycastHit hit;
+
+            // Perform a SphereCast to check if there is any obstacles
+            if (Physics.SphereCast(transform.position, radius, direction, out hit, radius))
+            {
+                // Calculate the penetration depth (This calculation helps prevents clipping)
+                float penetrationDepth = radius - hit.distance;
+
+                // Calculate the new position
+                Vector3 newPosition = transform.position + (-direction * penetrationDepth);
+
+                // Update the position of the sphere
+                transform.position = newPosition;
+            }
+        }
     }
 }
