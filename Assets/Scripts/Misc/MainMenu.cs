@@ -8,10 +8,19 @@ public class MainMenu : MonoBehaviour
     public Transform[] menuPanels;
     public float transitionDuration = 0.5f;
     public EasingFunctions easingFunctions;
+    private AudioSource audioSource;
+    public AudioClip popSFX;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public void GameScene()
     {
         //Play button to change scene
+        // Play sound effect
+        PlaySound();
         SceneManager.LoadScene(1);
     }
 
@@ -42,6 +51,8 @@ public class MainMenu : MonoBehaviour
     public void Quit()
     {
         // Quit
+        // Play sound effect
+        PlaySound();
         Application.Quit();
     }
 
@@ -60,6 +71,9 @@ public class MainMenu : MonoBehaviour
     {
         // Reset time
         float time = 0f;
+
+        // Play Sound
+        PlaySound();
 
         Transform targetPanel = menuPanels[panelIndex];
 
@@ -105,6 +119,9 @@ public class MainMenu : MonoBehaviour
         // Reset time
         float time = 0f;
 
+        // Play sound effect
+        PlaySound();
+
         //Close Panel
         foreach (var panel in menuPanels)
         {
@@ -139,5 +156,13 @@ public class MainMenu : MonoBehaviour
 
         // Ensure the final scale is exactly as expected
         targetPanel.localScale = endScale;
+    }
+
+    private void PlaySound()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(popSFX);
+        }
     }
 }
