@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     public float swingSpeed;
     private bool readyToJump = true;
+    [HideInInspector] public bool freeze;
     [HideInInspector] public bool activeGrapple;
     [HideInInspector] public bool swinging;
     private Vector3 velocityToSet;
