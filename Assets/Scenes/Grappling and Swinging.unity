@@ -5750,6 +5750,7 @@ GameObject:
   - component: {fileID: 1036548986}
   - component: {fileID: 1036548980}
   - component: {fileID: 1036548981}
+  - component: {fileID: 1036548990}
   - component: {fileID: 1036548983}
   - component: {fileID: 1036548989}
   - component: {fileID: 1036548988}
@@ -5777,6 +5778,7 @@ Transform:
   - {fileID: 1606797625}
   - {fileID: 1688934422}
   - {fileID: 411982090}
+  - {fileID: 1197537337}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1036548980
@@ -5798,6 +5800,7 @@ MonoBehaviour:
   jumpCooldown: 0.25
   airMultiplier: 0.1
   swingSpeed: 0
+  freeze: 0
   activeGrapple: 0
   swinging: 0
   playerHeight: 2
@@ -5822,9 +5825,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   lineRenderer: {fileID: 1452274952}
+  grapplingRope: {fileID: 1036548990}
   maxDistance: 25
   grappleDelayTime: 0.1
+  grapplePoint: {x: 0, y: 0, z: 0}
   overshootYAxis: 2
+  grappling: 0
   grapplingCD: 1
   grappleKey: 304
 --- !u!114 &1036548983
@@ -5971,6 +5977,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036548970}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1036548990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036548970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df32220c66476d4a862aa90d8a96f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 1452274952}
+  grapplingScript: {fileID: 1036548981}
+  ropeSegments: 30
+  damper: 5
+  strength: 600
+  velocity: 10
+  waveCount: 3
+  waveHeight: 3
+  waveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5.022461
+      outSlope: 5.022461
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.022371203
+      value: 0.112358496
+      inSlope: 2.4537656
+      outSlope: 2.4537656
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.11492961
+      outSlope: -0.11492961
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1050284097
 GameObject:
   m_ObjectHideFlags: 0
@@ -9957,3 +10016,4 @@ SceneRoots:
   - {fileID: 1463589452}
   - {fileID: 1345453517}
   - {fileID: 2130478395}
+  - {fileID: 756896135}

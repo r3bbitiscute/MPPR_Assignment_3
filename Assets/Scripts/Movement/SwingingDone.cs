@@ -238,10 +238,15 @@ public class SwingingDone : MonoBehaviour
         // if not grappling, don't draw rope
         if (!leftJoint && ! rightJoint) return;
 
+        if(lr.positionCount < 2)
+        {
+            lr.positionCount = 2;
+        }
+
         currentGrapplePosition =
             Vector3.Lerp(currentGrapplePosition, swingPoint, Time.deltaTime * 8f);
 
-        lr.SetPosition(0, gunTipPosition);
+        lr.SetPosition(0, gunTipPosition);  
         lr.SetPosition(1, currentGrapplePosition);
     }
 
