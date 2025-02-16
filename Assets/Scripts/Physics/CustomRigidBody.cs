@@ -6,7 +6,7 @@ public class CustomRigidBody : MonoBehaviour
 {
     public Vector3 acceleration;
     public Vector3 velocity;
-    public float mass = 1f;
+    public float mass = 5f;
 
     public bool useGravity = true;
     public bool isGrounded = false;
@@ -14,10 +14,10 @@ public class CustomRigidBody : MonoBehaviour
     public float drag = 0.1f; // Added drag for smoother stopping
     public LayerMask groundLayer; // Layer mask for proper ground detection
 
-    private Vector3 gravity = new Vector3(0,-9.81f, 0);
-    public float groundCheckDistance = 0.2f; // Distance for ground detection
+    public Vector3 gravity = new Vector3(0,-9.81f, 0);
+    public float groundCheckDistance = 1.1f; // Distance for ground detection
     private Quaternion initialRotation;
-    public float dropSpeed = 3.5f;
+    public float dropSpeed = 10f;
 
     private void Start()
     {
@@ -53,7 +53,7 @@ public class CustomRigidBody : MonoBehaviour
         }
     }
 
-    private void ApplyDrag()
+    public void ApplyDrag()
     {
         // Apply drag on velocity for smooth stopping
         if (isGrounded)

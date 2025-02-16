@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    public float swingSpeed;
     private bool readyToJump = true;
     [HideInInspector] public bool freeze;
     [HideInInspector] public bool activeGrapple;
@@ -65,6 +64,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /*private void FixedUpdate()
+    {
+        // Apply gravity only when not grounded
+        if (rb.useGravity && !isGrounded && rb.velocity.y > 0f)
+        {
+            rb.ApplyForce(rb.gravity * rb.mass * rb.dropSpeed);
+        }
+    }*/
     private void MovementInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -121,14 +128,18 @@ public class PlayerMovement : MonoBehaviour
             // Apply movement force with air multiplier if in the air, or normal force if grounded
             if (isGrounded)
             {
-                rb.ApplyForce(moveDirection.normalized * movementSpeed * 10f, ForceMode.Force);
-                Debug.Log("Player grounded, applying force: " + moveDirection.normalized * movementSpeed * 10f);
+                rb.ApplyForce(moveDirection.normalized * movementSpeed, ForceMode.Force);
+                Debug.Log("Player grounded, applying force: " + moveDirection.normalized * movementSpeed);
             }
             else
             {
-                rb.ApplyForce(moveDirection.normalized * movementSpeed * 10f * airMultiplier, ForceMode.Force);
-                Debug.Log("Player in air, applying force: " + moveDirection.normalized * movementSpeed * 10f * airMultiplier);
+                rb.ApplyForce(moveDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
+                Debug.Log("Player in air, applying force: " + moveDirection.normalized * movementSpeed* airMultiplier);
             }
+        }
+        else if (isGrounded)
+        {
+            rb.ApplyDrag();
         }
     }
 
