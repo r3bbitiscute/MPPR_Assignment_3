@@ -1,66 +1,86 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SphereCollider : MonoBehaviour
 {
     private float radius;
     private MeshRenderer meshRenderer;
 
+    // List to store object that could be collide with
+    private List<Bounds> collideObjects = new List<Bounds>();
+
     void Start()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        CalculatingRadiusAndHeight();
+        CalculateRadius();
+        FindObstacles();
     }
 
     private void Update()
     {
-        Collision();
+        CheckCollisions();
     }
 
     /// <summary>
-    /// Calculating the radius of the player using the mesh renderer
+    /// Calculate the sphere's radius based on the bounds
     /// </summary>
-    private void CalculatingRadiusAndHeight()
+    private void CalculateRadius()
     {
-        // Get the bounds of the mesh
         Bounds bounds = meshRenderer.bounds;
-
-        // Radius is of a circle is half the width of the mesh bounds
         radius = bounds.size.x / 2f;
     }
 
     /// <summary>
-    /// Use a sphere cast to check in every direction to see if there is a collision
+    /// Find all GameObjects with the tags "Wall" and "Ground" and assign their bounds into collideObjects for further calculation
     /// </summary>
-    private void Collision()
+    private void FindObstacles()
     {
-        Vector3[] directions = new Vector3[]
-        {
-            Vector3.right, Vector3.left, Vector3.forward, Vector3.back, Vector3.down, Vector3.up
-        };
+        string[] objectTags = { "Wall", "Ground" };
 
-        // Perform a SphereCast check in each direction in the directions array
-        foreach (var direction in directions)
+        foreach (string tag in objectTags)
         {
-            RaycastHit hit;
-
-            // Perform a SphereCast to check if there is any obstacles
-            if (Physics.SphereCast(transform.position, radius, direction, out hit, radius))
+            GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject obj in objects)
             {
-                // Lava compare tag
-                if (hit.collider.CompareTag("Lava"))
+                MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+                if (meshRenderer != null)
                 {
-                    Debug.Log("Collided with Lava");
+                    collideObjects.Add(meshRenderer.bounds);
                 }
-
-                // Calculate the penetration depth (This calculation helps prevents clipping)
-                float penetrationDepth = radius - hit.distance;
-
-                // Calculate the new position
-                Vector3 newPosition = transform.position + (-direction * penetrationDepth);
-
-                // Update the position of the sphere
-                transform.position = newPosition;
             }
         }
+    }
+
+    /// <summary>
+    /// Check for collisions with obstacles
+    /// </summary>
+    private void CheckCollisions()
+    {
+        // Looping through each object and see which points on the bounds are closest to player
+        foreach (var obj in collideObjects)
+        {
+            Vector3 closestPoint = GetNearestPointOnBounds(transform.position, obj);
+            float distance = Vector3.Distance(transform.position, closestPoint);
+
+            // If inside obstacle, push sphere out
+            if (distance < radius)
+            {
+                Vector3 pushDirection = (transform.position - closestPoint).normalized;
+                float penetrationDepth = radius - distance;
+                transform.position += pushDirection * penetrationDepth;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Finds the closest point of the object's bounds according to the player position.
+    /// <summary>
+    private Vector3 GetNearestPointOnBounds(Vector3 playerPos, Bounds bounds)
+    {
+        // Note: Bounds.min is the bottom left corner of the object, while Bounds.max is the top right corner of the object
+        float clampedX = Mathf.Clamp(playerPos.x, bounds.min.x, bounds.max.x);
+        float clampedY = Mathf.Clamp(playerPos.y, bounds.min.y, bounds.max.y);
+        float clampedZ = Mathf.Clamp(playerPos.z, bounds.min.z, bounds.max.z);
+        return new Vector3(clampedX, clampedY, clampedZ);
     }
 }
