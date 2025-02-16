@@ -7,6 +7,7 @@ TagManager:
   - SlowBlock
   - Wall
   - Ground
+  - Lava
   layers:
   - Default
   - TransparentFX

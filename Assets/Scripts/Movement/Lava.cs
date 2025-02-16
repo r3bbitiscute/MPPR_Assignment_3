@@ -6,6 +6,8 @@ public class Lava : MonoBehaviour
 {
     public float speed = 1f;
     private Vector3 initialScale;
+
+    public float lavaDamage = 10f; // Damage dealt to player when collided
     // Start is called before the first frame update
     void Start()
     {

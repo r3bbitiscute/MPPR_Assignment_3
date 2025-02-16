@@ -5,6 +5,9 @@ public class SphereCollider : MonoBehaviour
 {
     private float radius;
     private MeshRenderer meshRenderer;
+    public GameObject lava;
+    public Lava lavascript;
+    public PlayerMovement playerMovement;
 
     // List to store object that could be collide with
     private List<Bounds> collideObjects = new List<Bounds>();
@@ -19,6 +22,7 @@ public class SphereCollider : MonoBehaviour
     private void Update()
     {
         CheckCollisions();
+        CheckLavaCollision();
     }
 
     /// <summary>
@@ -35,7 +39,7 @@ public class SphereCollider : MonoBehaviour
     /// </summary>
     private void FindObstacles()
     {
-        string[] objectTags = { "Wall", "Ground" };
+        string[] objectTags = { "Wall", "Ground", "Lava"};
 
         foreach (string tag in objectTags)
         {
@@ -62,12 +66,38 @@ public class SphereCollider : MonoBehaviour
             Vector3 closestPoint = GetNearestPointOnBounds(transform.position, obj);
             float distance = Vector3.Distance(transform.position, closestPoint);
 
+           
             // If inside obstacle, push sphere out
             if (distance < radius)
             {
                 Vector3 pushDirection = (transform.position - closestPoint).normalized;
                 float penetrationDepth = radius - distance;
                 transform.position += pushDirection * penetrationDepth;
+            }
+        }
+    }
+
+    private void CheckLavaCollision()
+    {
+        if (lava != null)
+        {
+            MeshRenderer lavaRenderer = lava.GetComponent<MeshRenderer>();
+            if (lavaRenderer != null)
+            {
+                Bounds lavaBounds = lavaRenderer.bounds;
+                Vector3 closestPoint = GetNearestPointOnBounds(transform.position, lavaBounds);
+                float distance = Vector3.Distance(transform.position, closestPoint);
+
+                if (distance < radius) // Use radius to ensure accurate collision
+                {
+                    playerMovement.health -= lavascript.lavaDamage;
+
+                    if (playerMovement.health <= 0)
+                    {
+                        Debug.Log("Game Over");
+                    }
+                    Debug.Log("Player health" + playerMovement.health);
+                }
             }
         }
     }

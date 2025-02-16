@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool swinging;
     private Vector3 velocityToSet;
     private bool enableMovement;
+    public float health = 100f; 
 
     [Header("Ground Check")]
     public float playerHeight;
