@@ -5843,6 +5843,7 @@ MonoBehaviour:
   freeze: 0
   activeGrapple: 0
   swinging: 0
+  health: 100
   playerHeight: 2
   groundLayer:
     serializedVersion: 2
@@ -5901,8 +5902,8 @@ MonoBehaviour:
   predictionSphereCastRadius: 0
   predictionPointRight: {fileID: 777921225}
   predictionPointLeft: {fileID: 1028753354}
-  slowSpeedMultipliyer: 0.5
-  fastSpeedMultipliyer: 2
+  slowSpeedMultiplier: 0.5
+  fastSpeedMultiplier: 2
 --- !u!114 &1036548985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5935,7 +5936,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036548970}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71b0649a272c66c4dbc1083a9b7debbb, type: 3}
   m_Name: 
@@ -6010,6 +6011,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2eb983e407406048ac7ed17ca8627a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lava: {fileID: 0}
+  lavascript: {fileID: 0}
+  playerMovement: {fileID: 0}
 --- !u!135 &1036548992
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8810,6 +8814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  lavaDamage: 10
 --- !u!4 &1695715963
 Transform:
   m_ObjectHideFlags: 0

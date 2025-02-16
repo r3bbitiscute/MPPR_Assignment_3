@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ResetJump()
+    public void ResetJump()
     {
         
         
