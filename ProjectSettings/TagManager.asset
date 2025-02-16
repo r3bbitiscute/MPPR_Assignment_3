@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Ground
   - Lava
+  - WinGoal
   layers:
   - Default
   - TransparentFX

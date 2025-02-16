@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
@@ -24,6 +24,7 @@ public class SphereCollider : MonoBehaviour
     {
         CheckCollisions();
         CheckLavaCollision();
+        CheckWinCollision();
     }
 
     /// <summary>
@@ -40,7 +41,7 @@ public class SphereCollider : MonoBehaviour
     /// </summary>
     private void FindObstacles()
     {
-        string[] objectTags = { "Wall", "Ground", "Lava"};
+        string[] objectTags = { "Wall", "Ground", "Lava", "WinGoal"};
 
         foreach (string tag in objectTags)
         {
@@ -77,7 +78,9 @@ public class SphereCollider : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Check for collision with Lava
+    /// </summary>
     private void CheckLavaCollision()
     {
         if (lava != null)
@@ -101,6 +104,31 @@ public class SphereCollider : MonoBehaviour
                         Debug.Log("Game Over");
                     }
                     Debug.Log("Player health" + playerMovement.health);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// Check for collision with WinGoal
+    /// </summary>
+    private void CheckWinCollision()
+    {
+        GameObject winGoal = GameObject.FindGameObjectWithTag("WinGoal"); // ✅ Find the WinGoal object
+        if (winGoal != null)
+        {
+            MeshRenderer winRenderer = winGoal.GetComponent<MeshRenderer>();
+            if (winRenderer != null)
+            {
+                Bounds winBounds = winRenderer.bounds;
+                Vector3 closestPoint = GetNearestPointOnBounds(transform.position, winBounds);
+                float distance = Vector3.Distance(transform.position, closestPoint);
+
+                if (distance < radius) // If player collides with win goal
+                {
+                    Cursor.lockState = CursorLockMode.None; // Unlock cursor
+                    Cursor.visible = true;
+                    SceneManager.LoadScene("WinScene");
+                    Debug.Log("You Win!");
                 }
             }
         }
