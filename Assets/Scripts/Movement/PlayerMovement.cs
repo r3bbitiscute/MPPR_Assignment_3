@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<CustomRigidBody>();
         rb.freezeRotation = true; // Freeze rotation to ensure player doesn't flip
         enableMovement = true;
-
     }
 
     private void Update()
@@ -202,6 +201,4 @@ public class PlayerMovement : MonoBehaviour
 
         return velocityXZ + velocityY;
     }
-
-   
 }

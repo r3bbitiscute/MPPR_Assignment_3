@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class SphereCollider : MonoBehaviour
 {
@@ -94,6 +95,9 @@ public class SphereCollider : MonoBehaviour
 
                     if (playerMovement.health <= 0)
                     {
+                        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
+                        Cursor.visible = true;
+                        SceneManager.LoadScene("GameOver");
                         Debug.Log("Game Over");
                     }
                     Debug.Log("Player health" + playerMovement.health);

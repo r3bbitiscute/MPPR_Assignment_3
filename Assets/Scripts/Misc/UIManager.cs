@@ -30,6 +30,13 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("Game Restarted!");
     }
+
+    public void GameOverRestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Level 1");
+        Debug.Log("Game Restarted from Game Over!");
+    }
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();

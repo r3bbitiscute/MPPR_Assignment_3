@@ -3424,8 +3424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c2d03933cf0cf4287917f673528983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  lavaDamage: 10
+  speed: 0.1
+  lavaDamage: 100
 --- !u!1 &1137890228
 GameObject:
   m_ObjectHideFlags: 0
