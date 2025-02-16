@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - SlowBlock
+  - Wall
+  - Ground
   layers:
   - Default
   - TransparentFX
