@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - SlowBlock
-  - HighGravityBlock
+  - Wall
+  - Ground
+  - Lava
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - Water
   - UI
   - Wall
-  - Gravity Block
-  - Speed Block
+  - 
+  - 
   - 
   - 
   - 

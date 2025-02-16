@@ -2,16 +2,13 @@
 ## Roles and Responsibilities
 
 ### Akmal
-- Attack of Titan-style swinging
-- Area Speed Boost
-- Self Made RigidBody
+Attack of Titan-style swinging
+Level Design
 
 ### Khai Xuen
-- Pause Grapple
-- Self Made 3D Collider
+Pause Grapple
+TBD
 
 ### Kai Xiang
-- Rope Animation Using Physics
-- Assist Khai Xuen and Akmal on Self Made 3D Collider/Rigidbody
-- UI Design and Animations
-
+Rope Animation Using Physics
+TBD

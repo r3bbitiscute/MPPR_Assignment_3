@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     public Transform orientation;
-    private Rigidbody rb;
+    private CustomRigidBody rb;
 
     [Header("Movement")]
     private float horizontalInput;
@@ -18,13 +18,13 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    public float swingSpeed;
     private bool readyToJump = true;
     [HideInInspector] public bool freeze;
     [HideInInspector] public bool activeGrapple;
     [HideInInspector] public bool swinging;
     private Vector3 velocityToSet;
     private bool enableMovement;
+    public float health = 100f; 
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -33,86 +33,136 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<CustomRigidBody>();
         rb.freezeRotation = true; // Freeze rotation to ensure player doesn't flip
+        enableMovement = true;
+
     }
 
     private void Update()
     {
+        
         // Ground Check using raycast
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer);
 
         MovementInput(); // Taking inputs
+        Move();
 
-        //Ground Drag
-        if (isGrounded && !activeGrapple)
+        // Ground Drag logic
+        if (isGrounded && !activeGrapple && !swinging)
         {
-            rb.drag = groundDrag;
+            rb.drag = groundDrag; // Apply ground drag when grounded
         }
         else
         {
-            rb.drag = 0;
+            rb.drag = 0f; // No drag when in the air
         }
 
-        //Freeze Player
-        if (freeze) rb.velocity = Vector3.zero;
+        // Freeze Player
+        if (freeze)
+        {
+            rb.velocity = Vector3.zero; // Freeze movement if needed
+        }
     }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
-        Move(); // Move the player
-    }
-
-
-    /// <summary>
-    /// Gets horizontal and vertical input from the player.
-    /// </summary>
+        // Apply gravity only when not grounded
+        if (rb.useGravity && !isGrounded && rb.velocity.y > 0f)
+        {
+            rb.ApplyForce(rb.gravity * rb.mass * rb.dropSpeed);
+        }
+    }*/
     private void MovementInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        // Jump input handling
         if (Input.GetKey(KeyCode.Space) && isGrounded && readyToJump)
         {
-            readyToJump = false;
+            
             Jump();
-            Invoke(nameof(ResetJump), jumpCooldown); // Applying cooldown to jump
+            Invoke(nameof(ResetJump), jumpCooldown); // Cooldown before next jump
+            readyToJump = false;  // Prevent multiple jumps
         }
-    }
-
-    /// <summary>
-    /// Moves the player based on input direction by applying a force to the Rigidbody.
-    /// </summary>
-    private void Move()
-    {
-        if (activeGrapple) return; // Return if user are grappling
-        if(swinging) return;
-
-        // Giving direction based on player input
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        // Moving player (Applying force)
-        if (isGrounded)
-        {
-            rb.AddForce(moveDirection.normalized * movementSpeed * 10f, ForceMode.Force);
-        }
-        else
-        {
-            rb.AddForce(moveDirection.normalized * movementSpeed * 10f * airMultiplier, ForceMode.Force);
-        }
-
     }
 
     private void Jump()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // Reset vertical velocity
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // Apply jump force
+        Debug.Log("Jump() called, isGrounded: " + isGrounded + ", readyToJump: " + readyToJump);
+
+        if (isGrounded && readyToJump) // Ensure we're grounded before jumping
+        {
+            readyToJump = false;  // Prevent multiple jumps
+
+            // Set velocity directly instead of ApplyForce()
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+
+            Debug.Log("Jump applied with force: " + jumpForce);
+            if(!isGrounded)
+            {
+                Invoke(nameof(ResetJump), jumpCooldown); // Reset jump after cooldown
+            }
+            
+        }
     }
 
     public void ResetJump()
     {
-        readyToJump = true; // Reset jump
+        
+        
+        readyToJump = true; // Allow jumping again
+        
     }
+
+    private void Move()
+    {
+        if (!enableMovement) return;
+        if (activeGrapple || swinging) return; // Skip movement while grappling or swinging
+
+        // Calculate movement direction based on input
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        if (moveDirection.magnitude > 0) // If there is any movement input, apply force
+        {
+            // Apply movement force with air multiplier if in the air, or normal force if grounded
+            if (isGrounded)
+            {
+                rb.ApplyForce(moveDirection.normalized * movementSpeed, ForceMode.Force);
+                Debug.Log("Player grounded, applying force: " + moveDirection.normalized * movementSpeed);
+            }
+            else
+            {
+                rb.ApplyForce(moveDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
+                Debug.Log("Player in air, applying force: " + moveDirection.normalized * movementSpeed* airMultiplier);
+            }
+        }
+        else if (isGrounded)
+        {
+            rb.ApplyDrag();
+        }
+    }
+
+   private void OnCollisionEnter(Collision collision)
+    {
+        // Ensure player stays grounded after collision with the ground
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isGrounded = true; // Ensure player is grounded
+            readyToJump = true; // Allow jumping again once grounded
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        // Ensure player is no longer grounded when they exit the ground
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
+
 
     /// <summary>
     /// Initiates a jump towards the target position following a parabolic trajectory.
@@ -143,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z); // Calculate horizontal displacement between player and grapple point
 
         // Use v^2 = u^2 + 2as (0 = u upward ^2 + (2 * gravity * height)) to calculate the upward force (u upward)
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-25 * gravity * trajectoryHeight);
 
         /* Use s = ut + (at^2) / 2 (displacement = u horizontal * (time up + time down) + (0 * (time up + time down)^2) / 2)
         *  to calculate the horizontal force (u horizontal)
@@ -153,15 +203,5 @@ public class PlayerMovement : MonoBehaviour
         return velocityXZ + velocityY;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Enable user to move again and stop grappling
-        if (enableMovement)
-        {
-            enableMovement = false;
-            activeGrapple = false;
-
-            GetComponent<Grappling>().StopGrapple();
-        }
-    }
+   
 }
