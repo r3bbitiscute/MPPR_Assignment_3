@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: e899ce3d3bdfaec4997624ea12ad651e
   - enabled: 1
+    path: Assets/Scenes/Level 1.unity
+    guid: f3e6cc8039d85cf4984bbcf173cc61f2
+  - enabled: 1
     path: Assets/Scenes/Grappling and Swinging.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

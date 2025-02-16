@@ -46,6 +46,12 @@ public class SphereCollider : MonoBehaviour
             // Perform a SphereCast to check if there is any obstacles
             if (Physics.SphereCast(transform.position, radius, direction, out hit, radius))
             {
+                // Lava compare tag
+                if (hit.collider.CompareTag("Lava"))
+                {
+                    Debug.Log("Collided with Lava");
+                }
+
                 // Calculate the penetration depth (This calculation helps prevents clipping)
                 float penetrationDepth = radius - hit.distance;
 

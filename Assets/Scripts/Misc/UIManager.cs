@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     public Transform[] menuPanels;
     public float transitionDuration = 0.5f;
@@ -11,57 +11,56 @@ public class MainMenu : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip popSFX;
 
+    private bool isMenuOpen = false;
+
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("MainMenu");
+        Debug.Log("Return to Main Menu Button Pressed!");
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+
+        ClosePanel(0);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("Game Restarted!");
+    }
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void GameScene()
-    {
-        //Play button to change scene
-        // Play sound effect
-        PlaySound();
-        SceneManager.LoadScene("Level 1");
-    }
-
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Escape(2);
-            Debug.Log("Escape button pressed!");
+            if (isMenuOpen)
+            {
+                // If the menu is open, close it
+                ClosePanel(0);
+                Debug.Log("Escape button pressed to close the menu.");
+            }
+            else
+            {
+                Escape(0);
+                Debug.Log("Escape button pressed!");
+            }
+            isMenuOpen = !isMenuOpen;
         }
     }
     /*
     Index
-    - Tutorial = 0
-    - Credits = 1
-    - Escape = 2
+    - Escape = o
     */
-    public void Tutorial(int panelIndex)
-    {
-        // Set panel active
-        StartCoroutine(TogglePanel(panelIndex));
-    }
-
-    public void Credits(int panelIndex)
-    {
-        // Set panel active
-        StartCoroutine(TogglePanel(panelIndex));
-    }
-
     public void Escape(int panelIndex)
     {
         // Set panel active
         StartCoroutine(TogglePanel(panelIndex));
-    }
-
-    public void Quit()
-    {
-        // Quit
-        // Play sound effect
-        PlaySound();
-        Application.Quit();
     }
 
     public void ClosePanel(int panelIndex)
@@ -79,6 +78,9 @@ public class MainMenu : MonoBehaviour
     {
         // Reset time
         float time = 0f;
+
+        // Set Timescale to 1
+        Time.timeScale = 1f;
 
         // Play Sound
         PlaySound();
@@ -115,6 +117,12 @@ public class MainMenu : MonoBehaviour
 
         // Disable panel
         targetPanel.gameObject.SetActive(false);
+
+        // Lock and hide the cursor when the menu is closed
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Time.timeScale = 1f;
     }
 
     /// <summary>
@@ -124,6 +132,10 @@ public class MainMenu : MonoBehaviour
     /// <returns></returns>
     private IEnumerator TogglePanel(int panelIndex)
     {
+        // Unlock the cursor and make it visible when the menu is opened
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         // Reset time
         float time = 0f;
 
@@ -164,6 +176,12 @@ public class MainMenu : MonoBehaviour
 
         // Ensure the final scale is exactly as expected
         targetPanel.localScale = endScale;
+
+        // Delay the pause until the animation starts
+        yield return null;
+
+        // Set Timescale to 0
+        Time.timeScale = 0f;
     }
 
     private void PlaySound()
